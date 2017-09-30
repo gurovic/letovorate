@@ -1,0 +1,19 @@
+<h1>Создание нового экзамена</h1>
+
+<form action="{% url 'create' %}" method="post">
+{% csrf_token %}
+<p>Класс: <input type="text" name="grade" id="grade">
+<p>Предмет: <select name="round" id="round">
+  <option disabled>Выберите...</option>
+  {% for subject in subjects %}<option>{{subject.title}}</option>{% endfor %} 
+</select>
+<p>Раунд: <select name="round" id="round">
+  <option disabled>Выберите...</option>
+  {% for round in rounds %}<option>{{round.title}}</option>{% endfor %}
+</select>
+{% for i in range50 %}
+<p>Фамилия, имя, отчество <input type="text" id="fio[]" name="fio[]">&nbsp;&nbsp;&nbsp;
+E-mail <input type="text" id="email[]" name="email">
+{% endfor %}
+<p><input type="submit" value="Создать" />
+</form>
