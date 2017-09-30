@@ -1,0 +1,6 @@
+{% if user.is_superuser %}
+  <a href="{% url 'new_exam' %}">Создать новый экзамен</a>
+{% else %}
+Hello, examiner!
+{% endif %}
+ 

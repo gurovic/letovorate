@@ -1,0 +1,12 @@
+<h1>Список добавленных экзаменаторов</h1>
+<table border=1>
+{% for person in result %}
+<tr><td>{{person.fio}}</td><td>{{person.email}}</td><td>{{person.code}}</td></tr>
+{% endfor %}
+<form method="post" action="{% url 'index' %}">
+{% csrf_token %}
+Коды разосланы всем экзаменаторам по электронной почте.
+<input type="submit" name="OK" id="OK" value="OK">
+</form>
+</table>
+
