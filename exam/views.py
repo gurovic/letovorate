@@ -2,7 +2,7 @@ import itertools
 from django.shortcuts import render, redirect
 from django.shortcuts import get_object_or_404
 
-from .models import Examiner, Subject, Round, Task
+from .models import Examiner, Subject, Round, Task, Mark
 
 def index(request):
     return render(request, 'exam/index.html')
@@ -71,6 +71,7 @@ def login(request):
     request.session['subject'] = examiner.subject.pk
     request.session['round'] = examiner.round.pk
     request.session['grade'] = examiner.grade
+    request.session['examiner_id'] = examiner.pk
     return render(request, 'exam/check.html', {'examiner': examiner})
 
 def rate(request):
@@ -108,7 +109,16 @@ def rate(request):
         # some mark fields are empty
         return render(request, 'exam/rate.html', {'error_message':'Введены не все оценки',
                     'data':data, 'code':code})
-      
+
+    # everything is OK
+    tasks = Task.objects.filter(grade=grade,
+                        subject=subject, round=round).order_by('order')
+    for i in range(len(tasks)):
+        examiner = Examiner.objects.get(pk=request.session.get('examiner_id'))
+        Mark(task=tasks[i], value=marks[i], 
+             examiner=examiner, student_id=code).save()    
+    return render(request, 'exam/rate.html')
+  
 def check_error(request):
     return render(request, 'exam/check_error.html')
 
