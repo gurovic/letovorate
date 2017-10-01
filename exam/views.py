@@ -2,7 +2,7 @@ import random
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 
-from .models import Examiner, Subject, Round
+from .models import Examiner, Subject, Round, Task
 
 def index(request):
     return render(request, 'exam/index.html')
@@ -20,13 +20,30 @@ def generate_code():
         code += chr(ord('A') + random.randint(0, 25))
     return code
 
+def create_tasks(task_names, subject, grade, round):
+    order = 0
+    for title in task_names:
+        if not title:
+            break
+            # Add until the first emprty title
+        Task(title=title, 
+             order=order, 
+             subject=Subject.objects.get(pk=subject), 
+             grade=grade, 
+             round=Round.objects.get(pk=round)).save()
+        order += 10
+
 def create(request):
     result = []
+    task_names = request.POST.getlist('taskname[]')
     subject = request.POST["subject"]
     grade = int(request.POST["grade"])
     round = request.POST["round"]    
     fios = request.POST.getlist("fio[]")
     emails = request.POST.getlist("email[]")
+
+    create_tasks(task_names, subject, grade, round)
+
     for i in range(len(fios)):
         if fios[i]:
             examiner = Examiner(subject=Subject.objects.get(pk=subject), 
