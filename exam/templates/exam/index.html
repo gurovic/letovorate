@@ -1,5 +1,6 @@
 {% if user.is_superuser %}
-  <a href="{% url 'new_exam' %}">Создать новый экзамен</a>
+  <p><a href="{% url 'new_exam' %}">Создать новый экзамен</a>
+  <p><a href="{% url 'csv_all' %}">Скачать все оценки (csv)</a>
 {% else %}
 <h1>Введите код доступа к проверке экзаменационных работ</h1>
 <form action="{% url 'login' %}" method="POST">

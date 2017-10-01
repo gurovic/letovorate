@@ -1,4 +1,7 @@
 import itertools
+import csv
+
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.shortcuts import get_object_or_404
 
@@ -122,6 +125,15 @@ def rate(request):
 def check_error(request):
     return render(request, 'exam/check_error.html')
 
+def csv_all(request):
+    marks = Mark.objects.all()
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="allmarks.csv"'
 
+    writer = csv.writer(response)
+    for mark in marks:
+        writer.writerow([mark.value, mark.task.title, mark.task.subject.title, mark.task.round.title, mark.task.grade, mark.examiner.fio, mark.time, mark.student_id])
+
+    return response
 
 
