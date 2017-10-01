@@ -68,11 +68,30 @@ def login(request):
         examiner = Examiner.objects.get(code=code)
     except:
         return render(request, 'exam/check_error.html')
+    request.session['subject'] = examiner.subject.pk
+    request.session['round'] = examiner.round.pk
+    request.session['grade'] = examiner.grade
     return render(request, 'exam/check.html', {'examiner': examiner})
 
 def rate(request):
-    pass
+    round = Round.objects.get(pk=request.session.get('round'))
+    grade = int(request.session.get('grade'))
+    subject = Subject.objects.get(pk=request.session.get('subject'))
 
+    try:
+        code = request.POST['code']
+    except:
+
+        tasks = Task.objects.filter(grade=grade, 
+                        subject=subject, round=round).order_by('order')
+        return render(request, 'exam/rate.html', {'tasks':tasks})
+
+    marks = request.POST.getlist('marks[]')   
+    round = request.session.get('round')
+    grade = int(request.session.get('grade'))
+    subject = request.session.get('subject')
+    
+       
 def check_error(request):
     return render(request, 'exam/check_error.html')
 
