@@ -1,5 +1,5 @@
-import random
-from django.shortcuts import render
+import itertools
+from django.shortcuts import render, redirect
 from django.shortcuts import get_object_or_404
 
 from .models import Examiner, Subject, Round, Task
@@ -74,24 +74,41 @@ def login(request):
     return render(request, 'exam/check.html', {'examiner': examiner})
 
 def rate(request):
-    round = Round.objects.get(pk=request.session.get('round'))
-    grade = int(request.session.get('grade'))
-    subject = Subject.objects.get(pk=request.session.get('subject'))
+    try:
+        round = Round.objects.get(pk=request.session.get('round'))
+        grade = int(request.session.get('grade'))
+        subject = Subject.objects.get(pk=request.session.get('subject'))
+    except:
+        # examiner is not authorized
+        return redirect('index')
+    
+    tasks = list(Task.objects.filter(grade=grade,
+                        subject=subject, round=round).order_by('order').values_list('title', flat=True))
 
     try:
         code = request.POST['code']
     except:
-
-        tasks = Task.objects.filter(grade=grade, 
-                        subject=subject, round=round).order_by('order')
-        return render(request, 'exam/rate.html', {'tasks':tasks})
+        # form is not filled in
+        data = zip(tasks, [""] * len(tasks))
+        return render(request, 'exam/rate.html', {'data':data})
 
     marks = request.POST.getlist('marks[]')   
     round = request.session.get('round')
     grade = int(request.session.get('grade'))
     subject = request.session.get('subject')
+
+    if not code:
+        data = zip(tasks, marks)
+        # code field is empty
+        return render(request, 'exam/rate.html', {'error_message':'Введите код работы', 
+                    'data':data})    
     
-       
+    if '' in marks:
+        data = zip(tasks, marks)
+        # some mark fields are empty
+        return render(request, 'exam/rate.html', {'error_message':'Введены не все оценки',
+                    'data':data, 'code':code})
+      
 def check_error(request):
     return render(request, 'exam/check_error.html')
 

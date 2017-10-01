@@ -1,21 +1,14 @@
-{{ error_message }}
-
+<font color="red">{{ error_message }}</font>
+{{ code }}
 <form action="{% url 'rate' %}" method="POST">
     {% csrf_token %}
     <p>Код работы: <input type="text" name="code" id="code" value="{{ code }}">
     <p><table border=1><tr><td>Задача</td><td>Оценка</td></tr>
-    {% if marks %}
-        {% for mark in marks %}
-          <tr><td>{{ mark.task.title }}</td>
-              <td><input type="text" name="marks[]" value="{{ mark.value }}">
+        {% for line in data %}
+          <tr><td>{{ line.0 }}</td>
+              <td><input type="text" name="marks[]" value="{{ line.1 }}">
                                                                    </td></tr>
         {% endfor %}
-    {% else %}
-        {% for task in tasks %}
-          <tr><td>{{ task.title }}</td>
-              <td><input type="text" name="marks[]" value=""></td></tr>
-        {% endfor %}
-    {% endif %}
     </table>
     <p><input type="submit" name="submit" value="Сохранить и перейти к следующей работе">
 </form>
