@@ -35,3 +35,13 @@ class Task(models.Model):
         return "{} класс, {}, {}, задача {}".format(self.grade, self.subject,
                     self.round, self.title)
 
+
+class Mark(models.Model):
+    task = models.ForeignKey(Task, verbose_name="Задача")
+    student_id = models.IntegerField(verbose_name="ID участника")
+    value = models.IntegerField(verbose_name="Оценка")
+    time = models.DateTimeField(auto_now_add=True, verbose_name="Дата и время проверки")
+    examiner = models.ForeignKey(Examiner, verbose_name="Экзаменатор") 
+
+    def __str__(self):
+        return "{} for {} to student #{}".format(self.value, self.task, self.student_id)
