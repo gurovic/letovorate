@@ -11,6 +11,11 @@
   <option disabled>Выберите...</option>
   {% for round in rounds %}<option value="{{round.id}}">{{round.title}}</option>{% endfor %}
 </select>
+<p>Названия задач (например, 1 2 3а 3б 3в 4*):
+<p><nobr>{% for i in range50 %}
+<input type="text" size="3" name="taskname[]">
+{% endfor %}</nobr>
+<p>Список экзаменаторов:
 {% for i in range50 %}
 <p>Фамилия, имя, отчество <input type="text" id=fio[] name=fio[]>&nbsp;&nbsp;&nbsp;
 E-mail <input type="text" id=email[] name=email[]>

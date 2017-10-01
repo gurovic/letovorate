@@ -23,3 +23,15 @@ class Examiner(models.Model):
 
     def __str__(self):
         return self.fio
+
+class Task(models.Model):
+    title = models.CharField(max_length=20, verbose_name="Задача")
+    order = models.IntegerField(verbose_name="Порядок")
+    subject = models.ForeignKey(Subject, verbose_name="Предмет")
+    round = models.ForeignKey(Round, verbose_name="Раунд")
+    grade = models.IntegerField(verbose_name="Класс")
+
+    def __str__(self):
+        return "{} класс, {}, {}, задача {}".format(self.grade, self.subject,
+                    self.round, self.title)
+
