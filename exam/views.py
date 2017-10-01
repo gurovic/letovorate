@@ -1,6 +1,6 @@
 import random
 from django.shortcuts import render
-
+from django.shortcuts import get_object_or_404
 
 from .models import Examiner, Subject, Round
 
@@ -43,3 +43,22 @@ def create(request):
 
 def send_email(examiner):
     print(examiner)
+    # TODO
+
+def login(request):
+    code = request.POST["code"]
+    try:
+        examiner = Examiner.objects.get(code=code)
+    except:
+        return render(request, 'exam/check_error.html')
+    return render(request, 'exam/check.html', {'examiner': examiner})
+
+def rate(request):
+    pass
+
+def check_error(request):
+    return render(request, 'exam/check_error.html')
+
+
+
+

@@ -1,6 +1,11 @@
 {% if user.is_superuser %}
   <a href="{% url 'new_exam' %}">Создать новый экзамен</a>
 {% else %}
-Hello, examiner!
+<h1>Введите код доступа к проверке экзаменационных работ</h1>
+<form action="{% url 'login' %}" method="POST">
+{% csrf_token %}
+<input type="text" size=6 name="code" id="code">
+<input type="submit" value="Войти">
+</form> 
 {% endif %}
  

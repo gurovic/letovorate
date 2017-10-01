@@ -1,0 +1,4 @@
+<p>Вы {{ examiner.fio }}.
+<p>Вы проверяете экзамен {{ examiner.grade }} класса, по предмету {{ examiner.subject }}, {{ examiner.round }}.
+<p>Всё верно?
+<p><a href="{% url 'rate' %}">Да</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="{% url 'check_error' %}">Нет</a>
