@@ -117,7 +117,7 @@ def rate(request):
         examiner = Examiner.objects.get(pk=request.session.get('examiner_id'))
         Mark(task=tasks[i], value=marks[i], 
              examiner=examiner, student_id=code).save()    
-    return render(request, 'exam/rate.html')
+    return redirect('rate')
   
 def check_error(request):
     return render(request, 'exam/check_error.html')
