@@ -1,7 +1,9 @@
 {% if user.is_superuser %}
+<div align="right"><a href="/admin/logout?next=/exam">Выйти из аккаунта администратора экзамена</a></div>
   <p><a href="{% url 'new_exam' %}">Создать новый экзамен</a>
   <p><a href="{% url 'csv_all' %}">Скачать все оценки (csv)</a>
 {% else %}
+<div align="right"><a href="/admin/login?next=/exam/">Вход для администратора экзамена</a></div>
 <h1>Введите код доступа к проверке экзаменационных работ</h1>
 <form action="{% url 'login' %}" method="POST">
 {% csrf_token %}
