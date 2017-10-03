@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'^rate$', views.rate, name='rate'),
     url(r'^check_error$', views.check_error, name='check_error'),
     url(r'^csv_all$', views.csv_all, name='csv_all'),
+    url(r'^logout_examiner$', views.logout_examiner, name='logout_examiner'),
 ]

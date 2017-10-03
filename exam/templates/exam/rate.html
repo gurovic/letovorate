@@ -1,6 +1,7 @@
+<div align="right"><a href="{% url 'logout_examiner' %}">Закончить сессию проверки работ данного экзамена</a></div>
 <font color="red">{{ error_message }}</font>
 {{ code }}
-<form action="{% url 'rate' %}" method="POST">
+<form id="frm" action="{% url 'rate' %}" method="POST">
     {% csrf_token %}
     <p>Код работы: <input type="text" name="code" id="code" value="{{ code }}">
     <p><table border=1><tr><td>Задача</td><td>Оценка</td></tr>

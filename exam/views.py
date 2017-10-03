@@ -136,4 +136,10 @@ def csv_all(request):
 
     return response
 
+def logout_examiner(request):
+    del request.session['subject']
+    del request.session['grade']
+    del request.session['round']
+    del request.session['examiner_id']
+    return redirect('index')
 
