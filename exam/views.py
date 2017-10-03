@@ -11,10 +11,18 @@ def index(request):
     return render(request, 'exam/index.html')
 
 def new_exam(request):
+    pks = list(Task.objects.values('round', 'subject', 'grade').order_by('subject', 'round', 'grade').distinct())
+    result = []
+    for pk in pks:
+        result+=[(Round.objects.get(pk=pk['round']),
+                  Subject.objects.get(pk=pk['subject']),
+                  pk['grade'])]
+
     return render(request, 'exam/new_exam.html', 
                        {'subjects': Subject.objects.all(),
                         'rounds': Round.objects.all(),
                         'range50': list(range(50)),
+                        'exist': result,
                        })
 
 def generate_code():

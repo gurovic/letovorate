@@ -1,6 +1,11 @@
 <h1>Создание нового экзамена</h1>
-
-<form action="{% url 'create' %}" method="post">
+<hr>
+<p><b>Экзамены, созданные ранее:</b> 
+{% for exam in exist %}
+   <br>{{ exam.1 }} - {{ exam.0 }} - {{ exam.2 }} класс
+{% endfor %}
+<hr>
+<p><form action="{% url 'create' %}" method="post">
 {% csrf_token %}
 <p>Класс: <input type="text" name="grade" id="grade">
 <p>Предмет: <select name="subject" id="subject">
